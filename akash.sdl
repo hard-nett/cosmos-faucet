@@ -1,0 +1,33 @@
+---
+version: "2.0"
+services:
+  faucet:
+    image: faucet-provider/faucet:v0.1.0
+    expose:
+      - port: 80
+        as: 80
+        accept:
+          - faucet.terp.network
+        to:
+          - global: true
+profiles:
+  compute:
+    faucet:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 8GB
+        storage:
+          - size: 25GB
+  placement:
+    dcloud:
+      pricing:
+        faucet:
+          denom: uakt
+          amount: 1000
+deployment:
+  faucet:
+    dcloud:
+      profile: faucet
+      count: 1
